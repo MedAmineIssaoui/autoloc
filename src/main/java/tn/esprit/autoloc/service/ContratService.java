@@ -2,6 +2,7 @@ package tn.esprit.autoloc.service;
 
 // Atelier 4
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Contrat;
 import tn.esprit.autoloc.repository.ContratRepository;
@@ -24,6 +25,15 @@ public class ContratService {
     }
 
     public Contrat save(Contrat contrat) {
+        return contratRepository.save(contrat);
+    }
+
+    @Transactional
+    public Contrat addWithPayments(Contrat contrat) {
+        if (contrat.getPaiements() == null) {
+            throw new IllegalArgumentException("La liste des paiements ne peut pas être nulle");
+        }
+        contrat.getPaiements().forEach(paiement -> paiement.setContrat(contrat));
         return contratRepository.save(contrat);
     }
 

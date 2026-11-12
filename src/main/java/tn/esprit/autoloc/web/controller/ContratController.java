@@ -33,6 +33,15 @@ public class ContratController {
         return contratService.save(contrat);
     }
 
+    @PostMapping("/add-with-payments")
+    public ResponseEntity<Contrat> addWithPayments(@RequestBody Contrat contrat) {
+        try {
+            return ResponseEntity.ok(contratService.addWithPayments(contrat));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Contrat> update(@PathVariable Long id, @RequestBody Contrat contrat) {
         try {
